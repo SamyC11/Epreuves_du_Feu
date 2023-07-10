@@ -41,6 +41,8 @@ console.log("unfindable");
       process.exit(1);
 }
 
+
+
 //ERROR HANDLING
 let finalBoardArray = boardArray.map((element)=> {
     return element = element.split("");
@@ -58,8 +60,10 @@ if (isError(finalBoardArray, finaltoFindArray)) {
 
 //RESOLUTION
 
-console.log(finalBoardArray);
-console.log(finaltoFindArray);
+//console.log(finalBoardArray);
+//console.log(finaltoFindArray);
+
+
 
 
 
@@ -96,6 +100,7 @@ console.log(finaltoFindArray);
         }
          console.log(arrayTest);
          
+
 //ISPRESENT
 
 if (arrayTest.length>0) {
@@ -104,27 +109,40 @@ if (arrayTest.length>0) {
 else {
     console.log("j'ai pas trouvéoo !!");
 }      
-         
+       
+
+
 //Affichage tableau final avec symbole
 
-const arrayDisplay = finalBoardArray.map(element => element.fill("-"));
-console.log(arrayDisplay);
 
-let positionJ =0
-for (let i = 0; i < finaltoFindArray.length; i++) {
-    for (let j = 0; j < finaltoFindArray[i].length; j++) {
-        for (let k = 0; k < finaltoFindArray.length; k++) {
-            for (let l = 6; l < 6 + finaltoFindArray[i].length; l++) {
-                arrayDisplay[k][l]=finaltoFindArray[i][j];
-            }  
+
+const finalArrayDisplay = (reference, array, position) => {
+    const baseOfDisplay = reference.map(element => element.fill("-"));
+    console.log(baseOfDisplay);
+    console.log(position[0][1]);
+
+        for (let k = position[0][0],i = 0 ; k < position[0][0] + array.length, i < array.length; k++, i++) {
+            for (let l = position[0][1], j = 0; l < position[0][1] + array[i].length, j < array[i].length; l++, j++) {
+                baseOfDisplay[k][l]=array[i][j];
+            }
         }
-       
-    } 
+
+        return baseOfDisplay;
 }
-console.log(arrayDisplay.join("\n"));                 
-//console.log(finaltoFindArray[1][0]);                      
-         
-  //console.log(arrayDisplay.join("\n"));
-                //console.log(k);       
-         
+const Array1 = finalArrayDisplay(finalBoardArray, finaltoFindArray, arrayTest);
+console.log(Array1);
+
+
+
+
+const finalDisplay = (array) => {
+    return array.map(element => element.join(""));
+};
+
+const finalArray = finalDisplay(Array1);
+console.log(finalArray.join("\n"));
+
+
+
+  
     
