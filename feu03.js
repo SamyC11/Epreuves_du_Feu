@@ -1,3 +1,4 @@
+//FUNCTION
 
 const dataFilesExtraction  = (filePath) => {
     try {
@@ -12,45 +13,95 @@ const dataFilesExtraction  = (filePath) => {
     }
 }
 
+const isError = (data) => {
+    if (data.length !== 9) {
+         return true;
+    }
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].length !== 9) {
+            return true;
+        }
+        
+    }
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+            if (isNaN(data[i][j]) & data[i][j]!=="."){
+                return true;
+            }
+        }
+    }
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+            if (data[i].indexOf([j])!==data[i].lastIndexOf([j])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function sudokuTest (table) {
+    for (let i = 0; i < table.length; i++) {
+        if (table[i].includes(".")) {
+            if (table[i].indexOf(".")===table[i].lastIndexOf(".")) {
+                let referenceArray = Array(9).fill(0).map((_,index) => index + 1);
+                for (let j = 0; j < table[i].length; j++) {
+                    if (referenceArray.includes(parseInt(table[i][j]))) {
+                        referenceArray = referenceArray.filter((element) =>element !== parseInt(table[i][j]));
+                    }
+                } 
+                table[i][table[i].indexOf(".")]=referenceArray[0].toString();
+            } 
+        }
+    }
+    for (let j = 0; j < table[0].length; j++) {
+        let Index = [];
+        let referenceArrayBis = Array(9).fill(0).map((_,index) => index + 1);
+        for (let i = 0; i < table.length; i++) {
+            referenceArrayBis = referenceArrayBis.filter((element) =>element !== parseInt(table[i][j]));
+            if (table[i][j]===".") {
+                Index = [i, j];
+            }
+        }
+        if (referenceArrayBis.length>0) {
+            table[Index[0]][Index[1]] = referenceArrayBis[0].toString();
+        }
+       
+    }
+    return table;
+} 
 
 
-//PARSING
+function isSudokuCompleted (table) {
+let testIndicator = true
+    for (let i = 0; i < table.length; i++) {
+        if (table[i].includes(".")) {
+            testIndicator = false
+            break;
+        }
+    }
+    return testIndicator;
+}
 
+//ERRORS HANDLING
 const fs = require('fs');
 
-let incompleteSudoku  = dataFilesExtraction(process.argv[2]);
+const sudokuTable  = dataFilesExtraction(process.argv[2]);
 
-
-for (let i = 0; i < incompleteSudoku.length; i++) {
-    if (incompleteSudoku[i].includes(".")) {
-        if (incompleteSudoku[i].indexOf(".")===incompleteSudoku[i].lastIndexOf(".")) {
-            let referenceArray = Array(9).fill(0).map((_,index) => index + 1);
-            for (let j = 0; j < incompleteSudoku[i].length; j++) {
-                if (referenceArray.includes(parseInt(incompleteSudoku[i][j]))) {
-                    referenceArray = referenceArray.filter((element) =>element !== parseInt(incompleteSudoku[i][j]));
-                }
-            } 
-        incompleteSudoku[i][incompleteSudoku[i].indexOf(".")]=referenceArray[0].toString();
-        } 
-    }
-}
-console.log(incompleteSudoku.join("\n"));
-
-for (let i = 0; i < incompleteSudoku[0].length; i++) {
-    const element = array[i];
-    
+if (isError(sudokuTable)) {
+    console.log("error");
+    process.exit(1);
 }
 
-/*
-Pour tous le tableau1,
+//PARSING
+let testedSudoku = sudokuTest(sudokuTable);
 
-        pour chaque colonne (j de i=0)
-            créer un tableau composé des j de tous les i
-                si " " est présent
 
-                
-                    compter le nombre d'occurence COUNT
-                        si COUNT = 1
-                            extraire la ligne dans un tableau2
-                            trier ce tableau2
-                            push l'index de " " du tableau2, vers le tableau1*/
+//RESOLUTION
+
+
+//DISPLAY
+
+if (isSudokuCompleted(testedSudoku)) {
+    console.log(testedSudoku.join("\n"));
+}
