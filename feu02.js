@@ -29,7 +29,7 @@ const dataFilesExtraction  = (filePath) => {
    
 }
 
-const symbolWidth = (symbol) => {
+const widthOfSymbol = (symbol) => {
     let arrayWidth = 0;
     for (let i = 0; i < symbol.length; i++) {
         if (symbol[i].length>arrayWidth) {
@@ -38,11 +38,11 @@ const symbolWidth = (symbol) => {
     } return arrayWidth;
 }
 
-const findCoordinates = (reference, symbol, symbolWidth) => {
+const findCoordinates = (reference, symbol, width) => {
+    
     const arrayCoordinates = [];
-
     for (let i = 0; i < reference.length - symbol.length + 1; i++) {
-      for (let j = 0; j < reference[i].length - symbolWidth + 1; j++) {
+      for (let j = 0; j < reference[i].length - width + 1; j++) {
         let match = true;
     
         for (let k = 0; k < symbol.length; k++) {
@@ -63,7 +63,6 @@ const findCoordinates = (reference, symbol, symbolWidth) => {
           arrayCoordinates.push(i, j);
           break;
         }
-       
     }
     if (arrayCoordinates.length>0) {
            break; 
@@ -105,9 +104,9 @@ if (isError(boardArray, toFindArray)) {
 }
 
 //RESOLUTION
-const toFindArrayWidth = symbolWidth (toFindArray);
+const symbolWidth = widthOfSymbol(toFindArray)
 
-const symbolCoordinates = findCoordinates(boardArray,toFindArray,toFindArrayWidth);
+const symbolCoordinates = findCoordinates(boardArray,toFindArray, symbolWidth);
 
 
 //DISPLAY
